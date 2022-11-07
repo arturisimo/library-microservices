@@ -17,6 +17,10 @@ Sagas con máquina de estados y mensajería Kafka.
 
 ![cases](doc/cases.png)
 
+**Estados**
+
+![states](doc/state.png)
+
 **Servicios**
 
 * loan-service: https://bootify.io/app/G4YVQKMTL7DB
