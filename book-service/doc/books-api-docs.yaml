@@ -1,0 +1,133 @@
+openapi: 3.0.1
+info:
+  title: Book API
+  description: Microservice Book API.
+  version: v1
+servers:
+- url: http://localhost:8082
+  description: Local
+paths:
+  /api/v1/books/{id}:
+    get:
+      tags:
+      - book-resource
+      summary: book by id
+      operationId: book
+      parameters:
+      - name: id
+        in: path
+        description: book id
+        required: true
+        schema:
+          type: integer
+          format: int64
+        example: 1
+      responses:
+        "200":
+          description: book by id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookResponseDTO'
+    put:
+      tags:
+      - book-resource
+      operationId: updateBook
+      parameters:
+      - name: id
+        in: path
+        description: book id
+        required: true
+        schema:
+          type: integer
+          format: int64
+        example: 1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BookRequestDTO'
+        required: true
+      responses:
+        "200":
+          description: OK
+    delete:
+      tags:
+      - book-resource
+      operationId: deleteBook
+      parameters:
+      - name: id
+        in: path
+        description: book id
+        required: true
+        schema:
+          type: integer
+          format: int64
+        example: 1
+      responses:
+        "204":
+          description: No Content
+  /api/v1/books:
+    get:
+      tags:
+      - book-resource
+      summary: List of books
+      operationId: books
+      responses:
+        "200":
+          description: List of books
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookResponseDTO'
+    post:
+      tags:
+      - book-resource
+      operationId: createBook
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BookRequestDTO'
+        required: true
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: integer
+                format: int64
+  /:
+    get:
+      tags:
+      - book-controller
+      operationId: index
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+components:
+  schemas:
+    BookRequestDTO:
+      type: object
+      properties:
+        name:
+          type: string
+        copies:
+          type: integer
+          format: int32
+    BookResponseDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        copies:
+          type: integer
+          format: int32

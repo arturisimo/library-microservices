@@ -1,0 +1,137 @@
+openapi: 3.0.1
+info:
+  title: User API
+  description: Microservice User API.
+  version: v1
+servers:
+- url: http://localhost:8081
+  description: Local
+paths:
+  /api/v1/users/{id}:
+    get:
+      tags:
+      - user-resource
+      summary: user by id
+      operationId: user
+      parameters:
+      - name: id
+        in: path
+        description: user id
+        required: true
+        schema:
+          type: integer
+          format: int64
+        example: 1
+      responses:
+        "200":
+          description: user by id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponseDTO'
+    put:
+      tags:
+      - user-resource
+      operationId: updateUser
+      parameters:
+      - name: id
+        in: path
+        description: user id
+        required: true
+        schema:
+          type: integer
+          format: int64
+        example: 1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRequestDTO'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponseDTO'
+    delete:
+      tags:
+      - user-resource
+      operationId: deleteUser
+      parameters:
+      - name: id
+        in: path
+        description: user id
+        required: true
+        schema:
+          type: integer
+          format: int64
+        example: 1
+      responses:
+        "204":
+          description: No Content
+  /api/v1/users:
+    get:
+      tags:
+      - user-resource
+      summary: List of users
+      operationId: users
+      responses:
+        "200":
+          description: List of users
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponseDTO'
+    post:
+      tags:
+      - user-resource
+      summary: create a new user
+      operationId: createUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRequestDTO'
+        required: true
+      responses:
+        "201":
+          description: new user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponseDTO'
+  /:
+    get:
+      tags:
+      - user-controller
+      operationId: index
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+components:
+  schemas:
+    UserRequestDTO:
+      type: object
+      properties:
+        name:
+          type: string
+        loans:
+          type: integer
+          format: int32
+    UserResponseDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        loans:
+          type: integer
+          format: int32

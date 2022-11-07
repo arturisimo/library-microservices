@@ -1,0 +1,19 @@
+ [Edit online]
+
+@startuml
+hide empty description
+[*] --> NEW
+
+NEW --> USER_LOAN_PENDING : user_loan
+USER_LOAN_PENDING -> USER_LOAN_DONE: user_loan_success
+USER_LOAN_PENDING -d-> REJECTED: insufficient_user_loans
+REJECTED --> [*]
+USER_LOAN_DONE -> RESERVE_BOOK_PENDING: reserve_book
+RESERVE_BOOK_PENDING -d-> RESERVE_BOOK_FAIL: insufficient_book_copies
+RESERVE_BOOK_PENDING -d-> RESERVE_BOOK_DONE: reserve_book_success
+RESERVE_BOOK_DONE -d-> APPROVED: approve
+RESERVE_BOOK_FAIL -d-> USER_DELOAN_DONE: user_deloan
+USER_DELOAN_DONE -d-> REJECTED: reject
+APPROVED --> [*]
+
+@enduml

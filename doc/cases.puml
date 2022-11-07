@@ -1,0 +1,71 @@
+@startuml
+
+
+label l [
+{{
+left to right direction
+'top to bottom direction
+
+title "Request book succesful"
+
+actor "library user" as lu
+rectangle "loan-service" as loan
+rectangle "user-service" as user
+rectangle "book-service" as book
+
+lu --> loan: "0 request book"
+loan ..> lu: "5 OK"
+
+loan --> user :"1 reduce user loans"
+user ..> loan: "2 OK enough loans"
+
+loan --> book: "3 reduce book copies"
+book ..> loan: "4 OK enough copies"
+
+}}
+
+{{
+left to right direction
+'top to bottom direction
+
+title "not enough user loans"
+
+actor "library user" as lu2
+rectangle "loan-service" as loan2
+rectangle "user-service" as user2
+
+lu2 --> loan2: "0 request book"
+loan2 ..> lu2: "5 KO not enough loans"
+
+loan2 --> user2 :"1 reduce user loans"
+user2 ..> loan2: "2 KO not enough loans"
+}}
+
+{{
+left to right direction
+'top to bottom direction
+
+title "not enough book copies"
+
+actor "library user" as lu
+rectangle "loan-service" as loan
+rectangle "user-service" as user
+rectangle "book-service" as book
+
+lu --> loan: "0 request book"
+loan ..> lu: "7 KO not enough copies"
+
+loan --> user :"1 reduce user loans"
+user ..> loan: "2 OK enough loans"
+
+
+loan --> book: "3 reduce book copies"
+book ..> loan: "4 KO not enough copies"
+
+loan --> user :"5 restore user loan"
+user ..> loan: "6 OK loan restored"
+
+}}
+
+]
+@enduml

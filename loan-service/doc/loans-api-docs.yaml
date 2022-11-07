@@ -1,0 +1,139 @@
+openapi: 3.0.1
+info:
+  title: Book Loans API
+  description: Microservice Book Loans API.
+  version: v1
+servers:
+- url: http://localhost:8083
+  description: Local
+paths:
+  /api/v1/loans/{id}:
+    get:
+      tags:
+      - loan-resource
+      summary: loan by id
+      operationId: loan
+      parameters:
+      - name: id
+        in: path
+        description: loan id
+        required: true
+        schema:
+          type: integer
+          format: int64
+        example: 1
+      responses:
+        "200":
+          description: loan by id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoanResponseDTO'
+    put:
+      tags:
+      - loan-resource
+      operationId: updateLoan
+      parameters:
+      - name: id
+        in: path
+        description: loan id
+        required: true
+        schema:
+          type: integer
+          format: int64
+        example: 1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoanRequestDTO'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoanResponseDTO'
+    delete:
+      tags:
+      - loan-resource
+      operationId: deleteLoan
+      parameters:
+      - name: id
+        in: path
+        description: loan id
+        required: true
+        schema:
+          type: integer
+          format: int64
+        example: 1
+      responses:
+        "204":
+          description: No Content
+  /api/v1/loans:
+    get:
+      tags:
+      - loan-resource
+      summary: List of loans
+      operationId: loans
+      responses:
+        "200":
+          description: List of loans
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoanResponseDTO'
+    post:
+      tags:
+      - loan-resource
+      summary: create a new loan
+      operationId: createLoan
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoanRequestDTO'
+        required: true
+      responses:
+        "201":
+          description: new loan
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoanResponseDTO'
+  /:
+    get:
+      tags:
+      - loan-controller
+      operationId: index
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+components:
+  schemas:
+    LoanRequestDTO:
+      type: object
+      properties:
+        idUser:
+          type: integer
+          format: int64
+        idBook:
+          type: integer
+          format: int64
+    LoanResponseDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        idUser:
+          type: integer
+          format: int64
+        idBook:
+          type: integer
+          format: int64

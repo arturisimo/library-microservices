@@ -1,0 +1,69 @@
+api:
+  version: v1
+
+server:
+  port: 8083
+
+spring:
+  datasource:
+    url: ${JDBC_DATABASE_URL:jdbc:mysql://localhost:3306/loan?serverTimezone=UTC&createDatabaseIfNotExist=true}
+    username: ${JDBC_DATABASE_USERNAME:root}
+    password: ${JDBC_DATABASE_PASSWORD:root}
+    dbcp2:
+      max-wait-millis: 30000
+      validation-query: SELECT 1
+      validation-query-timeout: 30
+  jpa:
+    hibernate:
+      ddl-auto: create
+    open-in-view: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        jdbc:
+          lob:
+            non_contextual_creation: true
+        id:
+          new_generator_mappings: true
+  kafka:
+    properties:
+      bootstrap.servers: localhost:9092
+  cloud:
+    stream:
+      function:
+        definition: consumerUserLoanResponse;consumerUserDeLoanResponse;consumerBookReserveResponse;sendUserLoanRequest;sendReserveBookRequest;sendUserDeLoanRequest
+      bindings:
+        consumerUserLoanResponse-in-0:
+          binder: kafka
+          destination: user-loan-response
+          group: user-loans-group
+        consumerUserDeLoanResponse-in-0:
+          binder: kafka
+          destination: user-deloan-response
+          group: user-deloans-group
+        consumerBookReserveResponse-in-0:
+          binder: kafka
+          destination: book-reserve-response
+          group: book-reserves-group
+        sendUserLoanRequest-out-0:
+          binder: kafka
+          destination: user-loan-request
+          group: user-loans-group
+        sendReserveBookRequest-out-0:
+          binder: kafka
+          destination: book-reserve-request
+          group: book-reserves-group
+        sendUserDeLoanRequest-out-0:
+          binder: kafka
+          destination: user-deloan-request
+          group: user-deloans-group
+      kafka:
+        binder:
+          auto-create-topics: true
+          producer-properties:
+            key-serializer: org.apache.kafka.common.serialization.StringSerializer
+            value-serializer: org.apache.kafka.common.serialization.StringSerializer
+          consumer-properties:
+            key-serializer: org.apache.kafka.common.serialization.StringDeSerializer
+            value-serializer: org.apache.kafka.common.serialization.StringDeSerializer
+

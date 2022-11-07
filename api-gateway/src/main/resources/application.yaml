@@ -1,0 +1,10 @@
+api:
+  users:
+    uri: http://localhost:8081
+    path: /api/v1/users/
+  books:
+    uri: http://localhost:8082
+    path: /api/v1/books/
+  loans:
+    uri: http://localhost:8083
+    path: /api/v1/loans/
